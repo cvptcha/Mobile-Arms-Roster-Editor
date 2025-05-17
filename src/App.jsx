@@ -296,6 +296,22 @@ export default function RosterEditor() {
                         )}
                       </div>
                     )}
+
+                    {/* Heat Trackers */}
+{FRAME_DATA[mech.name] && (
+  <div>
+    <label className="text-sm text-red-400 mb-1 block">Heat</label>
+    <div className="flex flex-wrap gap-1 items-center">
+      {[...Array(3)].map((_, heatIdx) => (
+        <input
+          key={`heat-${mech.id}-${heatIdx}`}
+          type="checkbox"
+          className="accent-red-500 w-4 h-4 rounded-full border border-red-600 bg-black hover:animate-glitch"
+        />
+      ))}
+    </div>
+  </div>
+)}
                     
                     {/* Callsign and Frame */}
                     <div className="flex gap-2">
@@ -382,7 +398,7 @@ export default function RosterEditor() {
                             </SelectContent>
                           </Select>
                           {mech.pilot && PILOT_DATA[mech.pilot] && (
-                            <p title={PILOT_DATA[mech.pilot].ability} className="text-xs italic text-blue-400 truncate max-w-full cursor-help">
+                            <p title={PILOT_DATA[mech.pilot].ability} className="text-xs italic text-blue-400 whitespace-pre-wrap cursor-help">
                               {PILOT_DATA[mech.pilot].ability}
                             </p>
                           )}
@@ -411,6 +427,16 @@ export default function RosterEditor() {
                               {MOBILITY_DATA[mech.mobility].ability}
                             </p>
                           )}
+                          {mech.mobility && MOBILITY_DATA[mech.mobility] && (
+  <div className="text-xs text-blue-300">
+    <p>
+      <strong>Move:</strong> {MOBILITY_DATA[mech.mobility].move} | 
+      <strong>Strafe:</strong> {MOBILITY_DATA[mech.mobility].strafe} | 
+      <strong>Backpedal:</strong> {MOBILITY_DATA[mech.mobility].backpedal} | 
+      <strong>Rotate:</strong> {MOBILITY_DATA[mech.mobility].rotate}&deg;
+    </p>
+  </div>
+)}
                         </CardContent>
                       </Card>
                     </div>
@@ -521,6 +547,14 @@ export default function RosterEditor() {
                     <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                     <span className="text-xs text-green-400">ONLINE</span>
                   </div>
+                  <a
+  href="https://blacksitestudio.com/pages/mobile-arms"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="block mt-4 text-blue-400 text-sm underline hover:text-blue-200 transition"
+>
+  Mobile Arms by Black Site Studios
+</a>
                 </div>
               </CardContent>
             </Card>
