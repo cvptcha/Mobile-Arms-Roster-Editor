@@ -373,7 +373,6 @@ export default function RosterEditor() {
                         ))}
                       </SelectContent>
                     </Select>
-                    $1
 {mech.mobility && MOBILITY_DATA[mech.mobility]?.ability && (
   <p title={MOBILITY_DATA[mech.mobility].ability} className="italic text-blue-400 text-xs whitespace-pre-wrap cursor-help">
     {MOBILITY_DATA[mech.mobility].ability}
