@@ -18,8 +18,10 @@ const MOBILITY_DATA = {
   "Tracked": { move: "M", strafe: "-", backpedal: "-", rotate: "90", energy: 2, hardpoints: -1 },
   "Aeromobile": { move: "M", strafe: "M", backpedal: "M", rotate: "180", energy: 4, hardpoints: 1 },
   "Stealth-Op Locomotion": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: This frame has +1 armor while it is the target of a LOCK action." },
-  "Quadruped": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 3, hardpoints: 0, ability: "ACTION: Flip this card to ENTRENCHED MODE."  },
-  "Heelie Wheelies": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: Whenever this frame gains heat from a Mobility action during it's activation, flip this card to BOOST MODE."  },
+  "Quadruped (Traversal)": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 3, hardpoints: 0, ability: "ACTION: Flip this card to ENTRENCHED MODE."  },
+  "Quadruped (Entrenched)": { move: "-", strafe: "-", backpedal: "-", rotate: "90", energy: 3, hardpoints: 0, ability: "Whenever this frame rolls dice as part of a Ranged attack, add +2 surge results to the roll. At the beginning of your Vent Cycle, flip this card to TRAVERSAL MODE."  },
+  "Heelie Wheelies (Traversal)": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: Whenever this frame gains heat from a Mobility action during it's activation, flip this card to BOOST MODE."  },
+  "Heelie Wheelies (Boost)": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: Whenever this frame makes a melee attack action, andd +2 surge results to the roll and flip this card to TRAVERSAL MODE."  },
   "All-Wheel Drive": { move: "M", strafe: "M", backpedal: "M", rotate: "0", energy: 0, hardpoints: -1 }
 };
 
