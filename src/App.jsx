@@ -184,6 +184,10 @@ export default function RosterEditor() {
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Left column - Roster editor */}
         <div className="w-full lg:w-2/3 space-y-4">
+          <Input
+            placeholder="Name Your Strike Force"
+            className="text-lg font-bold border-blue-600 bg-black text-blue-300 placeholder-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-300 hover:brightness-125"
+          />
           <p className="mb-4">Total Tonnage: {roster.reduce((sum, mech) => sum + (mech.tonnage || 0), 0)}</p>
           <div className="flex flex-wrap gap-2 items-center">
             <Button className="transition-transform hover:animate-glitch" onClick={addMechFrame}>Add Mech Frame</Button>
@@ -435,7 +439,7 @@ export default function RosterEditor() {
               <CardContent>
                 <h3 className="text-lg font-bold mb-2 text-blue-300">Mobile Arms: Info</h3>
                 <p className="text-sm text-blue-300 mb-2">
-                  Use this roster editor to assemble your perfect mechanized strike force.
+                  Use this UNOFFICIAL roster editor to assemble your perfect mechanized strike force.
                 </p>
                 <div className="space-y-2 text-sm text-blue-400">
                   <p>• Choose frame types based on mission parameters</p>
