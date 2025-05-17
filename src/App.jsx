@@ -1,4 +1,4 @@
-// Mobile Arms: Endless Destiny Roster Editor
+// Mobile Arms: Endless Destiny Roster Editor — Fixed missing FRAME_DATA and MOBILITY_DATA definitions
 
 import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,20 +7,20 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectItem, SelectContent, SelectTrigger } from "@/components/ui/select";
 
 const FRAME_DATA = {
-  "Heavy Frame": { tonnage: 4, energy: 15, hardpoints: 6 },
-  "Medium Frame": { tonnage: 3, energy: 12, hardpoints: 5 },
-  "Light Frame": { tonnage: 2, energy: 9, hardpoints: 4 },
-  "Quad Copter": { tonnage: 1, energy: 4, hardpoints: 1 },
-  "Scuttler": { tonnage: 1, energy: 4, hardpoints: 1 }
+  "Heavy Frame": { tonnage: 4, energy: 15, hardpoints: 6, hullpoints: 9 },
+  "Medium Frame": { tonnage: 3, energy: 12, hardpoints: 5, hullpoints: 7 },
+  "Light Frame": { tonnage: 2, energy: 9, hardpoints: 4, hullpoints: 5 },
+  "Quad Copter": { tonnage: 1, energy: 4, hardpoints: 1, hullpoints: 3 },
+  "Scuttler": { tonnage: 1, energy: 4, hardpoints: 1, hullpoints: 3 }
 };
 
 const MOBILITY_DATA = {
-  "Bipedal": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 0, hardpoints: 0 },
+  "Bipedal": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 0, hardpoints: 0, ability: "SURGE 2: Perform a free Core Mobility Action." },
   "Tracked": { move: "M", strafe: "-", backpedal: "-", rotate: "90", energy: 2, hardpoints: -1 },
   "Aeromobile": { move: "M", strafe: "M", backpedal: "M", rotate: "180", energy: 4, hardpoints: 1 },
-  "Stealth-Op Locomotion": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0 },
-  "Quadruped": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 3, hardpoints: 0 },
-  "Heelie Wheelies": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 0, hardpoints: 0 },
+  "Stealth-Op Locomotion": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: This frame has +1 armor while it is the target of a LOCK action." },
+  "Quadruped": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 3, hardpoints: 0, ability: "ACTION: Flip this card to ENTRENCHED MODE."  },
+  "Heelie Wheelies": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 0, hardpoints: 0, ability: "PASSIVE: Whenever this frame gains heat from a Mobility action during it's activation, flip this card to BOOST MODE."  },
   "All-Wheel Drive": { move: "M", strafe: "M", backpedal: "M", rotate: "0", energy: 0, hardpoints: -1 }
 };
 
@@ -33,22 +33,29 @@ const WEAPON_OPTIONS = [
   "Mortar Pods"
 ];
 
-const PILOT_OPTIONS = ["Treadhead", "Surveyor", "Saboteur", "Duelist" ];
+const PILOT_OPTIONS = ["Treadhead", "Surveyor", "Saboteur", "Duelist", "Drone Operator", "Engineer", "Gunner", "Sysop", "Crack-Shot", "Sapper", "Spotter" ];
 
 const PILOT_DATA = {
-  "Treadhead": { ability: "Once per game, reroll all attack dice for a single volley." },
-  "Surveyor": { ability: "Can detect stealth units at +1 sensor range." },
-  "Duelist": { ability: "Add +1 surge result to melee attack rolls." },
-  "Saboteur": { ability: "Ignores the first point of cover bonus when attacking." }
+  "Treadhead": { ability: "PASSIVE: Add +1 surge result ro ranged attacks with the HEAVY ARTILLERY keyword." },
+  "Surveyor": { ability: "SURGE 2: Remove 1 heat from another friendly frame within L of this one." },
+  "Duelist": { ability: "PASSIVE: Add +1 surge result to melee attack rolls." },
+  "Drone Operator": { ability: "You may include up to one Drone in your force, if you have the available tonnage." },
+  "Engineer": { ability: "SURGE 3: Remove 1 damage from this frame." },
+  "Gunner": { ability: "SURGE 2: Reroll 1 die in this roll. You must keep the new result." },
+  "Sysop": { ability: "SURGE 3: Remove 1 heat token from this frame." },
+  "Crack-Shot": { ability: "SURGE 5: If there are 2 or fewer strikes in this ranged attack roll, add +3 strikes." },
+  "Sapper": { ability: "PASSIVE: Add +1 surge to attacks made while this frame has secured the ZoO or a PoI." },
+  "Spotter": { ability: "PASSIVE: Add +2 strikes to locks performed by this frame." },
+  "Saboteur": { ability: "PASSIVE: This frame has +1 armor while it is the target of a LOCK action." }
 };
 
 const WEAPON_DATA = {
-  "Free Hand": { range: "Melee", damage: 1, energy: 2, hardpoints: 1, ability: "Counts as a light weapon for reactions." },
-  "Pilebunker": { range: "Melee", damage: 4, energy: 3, hardpoints: 1, ability: "When this weapon disables an enemy frame, the pilot is immediately slain." },
-  "Beam Saber": { range: "Melee", damage: 2, energy: 4, hardpoints: 1, ability: "SURGE: Automatically deal 1 damage to teh target." },
-  "Thermal Lance": { range: "Long", damage: 5, energy: 2, hardpoints: 2, ability: "Penetrates armor. Causes overheating on hit." },
-  "Howitzer": { range: "Long", damage: 4, energy: 4, hardpoints: 2, ability: "Area of effect. Deals splash damage." },
-  "Mortar Pods": { range: "Long", damage: 2, energy: 3, hardpoints: 1, ability: "Indirect fire. Can arc over obstacles." }
+  "Free Hand": { range: "Melee", damage: 1, energy: 2, heat: 4, dice: 4, hardpoints: 1, ability: "Counts as a light weapon for reactions." },
+  "Pilebunker": { range: "Melee", damage: 4, energy: 3, heat: 3, dice: 3, hardpoints: 1, ability: "When this weapon disables an enemy frame, the pilot is immediately slain." },
+  "Beam Saber": { range: "Melee", damage: 2, energy: 4, heat: 3, dice: 4, hardpoints: 1, ability: "SURGE: Automatically deal 1 damage to teh target." },
+  "Thermal Lance": { range: "Long", damage: 5, energy: 2, heat: 3, dice: 3, hardpoints: 2, ability: "Penetrates armor. Causes overheating on hit." },
+  "Howitzer": { range: "Long", damage: 4, energy: 4, heat: 3, dice: 4, hardpoints: 2, ability: "Area of effect. Deals splash damage." },
+  "Mortar Pods": { range: "Long", damage: 2, energy: 3, heat: 2, dice: 3, hardpoints: 1, ability: "Indirect fire. Can arc over obstacles." }
 };
 
 const RANGE_ICONS = {
@@ -112,13 +119,14 @@ export default function RosterEditor() {
       pilot: '',
       mobility: '',
       weapons: ['', '', ''],
-      upgrades: ['', '', '']
+      upgrades: ['', '', ''],
+      hull: []
     }]);
   };
 
   return (
     <div className="p-4 text-blue-300 font-straczynski bg-gradient-to-b from-black via-[#0f1a3a] to-[#060a14] animate-bloom min-h-screen relative overflow-hidden before:content-[''] before:absolute before:inset-0 before:bg-[url('/scanlines.svg')] before:bg-repeat before:opacity-20 before:pointer-events-none before:z-10 after:content-[''] after:absolute after:inset-0 after:pointer-events-none after:z-10 after:blur after:opacity-40 after:mix-blend-screen relative overflow-hidden before:content-[''] before:absolute before:inset-0 before:bg-[repeating-linear-gradient(0deg,_rgba(255,255,255,0.03)_0px,_rgba(255,255,255,0.03)_1px,_transparent_1px,_transparent_4px)] before:pointer-events-none before:z-10">
-      <h1 className="text-3xl font-bold border-b border-blue-500 mb-2 pb-1 bg-gradient-to-r from-blue-400 to-blue-700 bg-clip-text text-transparent shadow-[0_0_0.5px_red,0_0_1px_lime,0_0_1.5px_blue]">MOBILE ARMS: ENDLESS DESTINY - Roster Editor</h1>
+      <h1 className="text-3xl font-bold border-b border-blue-500 mb-2 pb-1 bg-gradient-to-r from-blue-400 to-blue-700 bg-clip-text text-transparent shadow-[0_0_0.5px_red,0_0_1px_lime,0_0_1.5px_blue]">MOBILE ARMS: Endless Destiny</h1>
       <p className="mb-4">Total Tonnage: {roster.reduce((sum, mech) => sum + (mech.tonnage || 0), 0)}</p>
       <div className="flex flex-wrap gap-2 items-center">
         <Button className="transition-transform hover:animate-glitch" onClick={addMechFrame}>Add Mech Frame</Button>
@@ -132,6 +140,34 @@ export default function RosterEditor() {
         {roster.map((mech, index) => (
           <Card key={mech.id} className="bg-black/60 border border-blue-700 p-4">
             <CardContent className="space-y-3">
+              {/* Hullpoints Tracker */}
+              {FRAME_DATA[mech.name] && (
+                <div>
+                  <label className="text-sm text-blue-400 mb-1 block">Hullpoints</label>
+<div className="flex flex-wrap gap-1 items-center">
+  {[...Array(FRAME_DATA[mech.name].hullpoints)].map((_, hpIdx) => (
+    <input
+      key={`hp-${mech.id}-${hpIdx}`}
+      type="checkbox"
+      className="accent-blue-500 w-4 h-4 rounded-sm bg-black border border-blue-600 transition duration-200"
+      checked={mech.hull?.includes(hpIdx)}
+      onChange={() => {
+        setRoster(prev => prev.map((m, i) => {
+          if (i !== index) return m;
+          const updated = m.hull?.includes(hpIdx)
+            ? m.hull.filter(h => h !== hpIdx)
+            : [...(m.hull || []), hpIdx];
+          return { ...m, hull: updated };
+        }));
+      }}
+    />
+  ))}
+</div>
+{FRAME_DATA[mech.name] && mech.hull?.length >= FRAME_DATA[mech.name].hullpoints && (
+  <p className="text-red-500 text-xs mt-1 animate-pulse">STATUS: CRITICAL - FRAME DISABLED</p>
+)}
+                </div>
+              )}
               <div className="flex gap-2">
               <Input
                 placeholder="Callsign"
@@ -240,7 +276,7 @@ export default function RosterEditor() {
 </Select>
 {mech.pilot && PILOT_DATA[mech.pilot] && (
   <p title={PILOT_DATA[mech.pilot].ability} className="text-xs italic text-blue-400 truncate max-w-full cursor-help">
-    Hover: {PILOT_DATA[mech.pilot].ability}
+    {PILOT_DATA[mech.pilot].ability}
   </p>
 )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -267,9 +303,9 @@ export default function RosterEditor() {
           </Select>
           {weapon && WEAPON_DATA[weapon] && (
             <div className="text-xs text-blue-200 border-l-2 border-blue-400 pl-2 ml-1">
-              <p><strong>{RANGE_ICONS[WEAPON_DATA[weapon].range]} {weapon}</strong> — {WEAPON_DATA[weapon].range}, DMG {WEAPON_DATA[weapon].damage}, EN {WEAPON_DATA[weapon].energy}</p>
+              <p><strong>{RANGE_ICONS[WEAPON_DATA[weapon].range]} — DICE {WEAPON_DATA[weapon].dice}, POW {WEAPON_DATA[weapon].damage}, Heat Threshold {WEAPON_DATA[weapon].heat}</strong></p>
               <p title={WEAPON_DATA[weapon].ability} className="italic text-blue-400 truncate max-w-full cursor-help">
-                Hover: {WEAPON_DATA[weapon].ability}
+                {WEAPON_DATA[weapon].ability}
               </p>
             </div>
           )}
@@ -301,9 +337,9 @@ export default function RosterEditor() {
           </Select>
           {upgrade && UPGRADE_DATA[upgrade] && (
             <div className="text-xs text-blue-200 border-l-2 border-blue-400 pl-2 ml-1">
-              <p><strong>{upgrade}</strong> — {UPGRADE_DATA[upgrade].bonus}, EN {UPGRADE_DATA[upgrade].energy}</p>
+              <p><strong>{UPGRADE_DATA[upgrade].bonus}, EN {UPGRADE_DATA[upgrade].energy}</strong></p>
               <p title={UPGRADE_DATA[upgrade].ability} className="italic text-blue-400 truncate max-w-full cursor-help">
-                Hover: {UPGRADE_DATA[upgrade].ability}
+                {UPGRADE_DATA[upgrade].ability}
               </p>
             </div>
           )}
@@ -337,12 +373,12 @@ export default function RosterEditor() {
                         ))}
                       </SelectContent>
                     </Select>
-                    <p className="text-xs mt-2 text-blue-300">
-                      Move: {MOBILITY_DATA[mech.mobility]?.move || '-'} | 
-                      Strafe: {MOBILITY_DATA[mech.mobility]?.strafe || '-'} | 
-                      Backpedal: {MOBILITY_DATA[mech.mobility]?.backpedal || '-'} | 
-                      Rotate: {MOBILITY_DATA[mech.mobility]?.rotate || '-'}
-                    </p>
+                    $1
+{mech.mobility && MOBILITY_DATA[mech.mobility]?.ability && (
+  <p title={MOBILITY_DATA[mech.mobility].ability} className="italic text-blue-400 text-xs whitespace-pre-wrap cursor-help">
+    {MOBILITY_DATA[mech.mobility].ability}
+  </p>
+)}
                   </CardContent>
                 </Card>
               </div>
