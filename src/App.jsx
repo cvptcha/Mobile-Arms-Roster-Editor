@@ -19,7 +19,7 @@ const MOBILITY_DATA = {
   "Aeromobile": { move: "M", strafe: "M", backpedal: "M", rotate: "180", energy: 4, hardpoints: 1 },
   "Stealth-Op Locomotion": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: This frame has +1 armor while it is the target of a LOCK action." },
   "Quadruped": { move: "M", strafe: "S", backpedal: "S", rotate: "90", energy: 3, hardpoints: 0, ability: "ACTION: Flip this card to ENTRENCHED MODE."  },
-  "Heelie Wheelies": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 0, hardpoints: 0, ability: "PASSIVE: Whenever this frame gains heat from a Mobility action during it's activation, flip this card to BOOST MODE."  },
+  "Heelie Wheelies": { move: "M", strafe: "M", backpedal: "S", rotate: "90", energy: 2, hardpoints: 0, ability: "PASSIVE: Whenever this frame gains heat from a Mobility action during it's activation, flip this card to BOOST MODE."  },
   "All-Wheel Drive": { move: "M", strafe: "M", backpedal: "M", rotate: "0", energy: 0, hardpoints: -1 }
 };
 
@@ -27,9 +27,19 @@ const WEAPON_OPTIONS = [
   "Free Hand",
   "Pilebunker",
   "Beam Saber",
+  "Chainsaw",
+  "Thunderfist",
+  "Gigascalpel",
   "Thermal Lance",
+  "Submachine Gun",
+  "Autorifle",
+  "Beam Rifle",
+  "Chaingun",
+  "One-Way Ticket",
   "Howitzer",
-  "Mortar Pods"
+  "Railgun",
+  "Mortar Pods",
+  "Missile Pods"
 ];
 
 const PILOT_OPTIONS = ["Treadhead", "Surveyor", "Saboteur", "Duelist", "Drone Operator", "Engineer", "Gunner", "Sysop", "Crack-Shot", "Sapper", "Spotter"];
@@ -49,35 +59,90 @@ const PILOT_DATA = {
 };
 
 const WEAPON_DATA = {
-  "Free Hand": { range: "Melee", damage: 1, energy: 2, heat: 4, dice: 4, hardpoints: 1, ability: "Counts as a light weapon for reactions." },
-  "Pilebunker": { range: "Melee", damage: 4, energy: 3, heat: 3, dice: 3, hardpoints: 1, ability: "When this weapon disables an enemy frame, the pilot is immediately slain." },
-  "Beam Saber": { range: "Melee", damage: 2, energy: 4, heat: 3, dice: 4, hardpoints: 1, ability: "SURGE: Automatically deal 1 damage to teh target." },
-  "Thermal Lance": { range: "Long", damage: 5, energy: 2, heat: 3, dice: 3, hardpoints: 2, ability: "Penetrates armor. Causes overheating on hit." },
-  "Howitzer": { range: "Long", damage: 4, energy: 4, heat: 3, dice: 4, hardpoints: 2, ability: "Area of effect. Deals splash damage." },
-  "Mortar Pods": { range: "Long", damage: 2, energy: 3, heat: 2, dice: 3, hardpoints: 1, ability: "Indirect fire. Can arc over obstacles." }
+  "Free Hand": { range: "MELEE", damage: 1, energy: 1, heat: 4, dice: 4, hardpoints: 1, type: "Force", ability: "The first INTERACT action made by this frame does not generate a Heat token." },
+  "Pilebunker": { range: "MELEE", damage: 4, energy: 3, heat: 3, dice: 3, hardpoints: 1, type: "Piercing", ability: "When this weapon disables an enemy frame, the pilot is immediately slain." },
+  "Beam Saber": { range: "MELEE", damage: 2, energy: 4, heat: 3, dice: 4, hardpoints: 1, type: "Energy", ability: "SURGE 3: Automatically deal 1 damage to the target." },
+  "Chainsaw": { range: "MELEE", damage: 0, energy: 4, heat: 3, dice: 6, hardpoints: 1, type: "Piercing", ability: "SURGE 2: Increase the POW of this attack by +1. This ability can be triggered more than once." },
+  "Thunderfist": { range: "MELEE", damage: 1, energy: 3, heat: 3, dice: 4, hardpoints: 1, type: "Force", ability: "PASSIVE: Frames damaged by this attack must make a Backpedal move or take +2 additional damage." },
+  "Gigascalpel": { range: "MELEE", damage: 2, energy: 3, heat: 3, dice: 4, hardpoints: 1, type: "Piercing", ability: "SURGE 2: Reduce the target's armor by -1 until the roll is resolved." },
+  "Thermal Lance": { range: "RANGED", damage: 1, energy: 2, heat: 3, dice: 3, hardpoints: 1, type: "Snap-Fire, Energy", ability: "SURGE 3: When performing a peripheral action with a target, give that target a heat token. PASSIVE: Whenever a frame takes damage from this gun, it takes 1 additional damage per heat token on it." },
+  "Submachine Gun": { range: "RANGED", damage: 1, energy: 3, heat: 3, dice: 4, hardpoints: 1, type: "Snap-Fire, Ballistic", ability: "SURGE 2: Increase the POW of this attack by +1. This ability can be triggered more than once." },
+  "Autorifle": { range: "RANGED", damage: 1, energy: 3, heat: 3, dice: 5, hardpoints: 1, type: "Snap-Fire, Ballistic", ability: "SURGE 3: Add +1 strike to this attack. PASSIVE: Ignore the first heat result roll for this weapon." },
+  "Beam Rifle": { range: "RANGED", damage: 1, energy: 4, heat: 3, dice: 3, hardpoints: 1, type: "Snap-Fire, Energy", ability: "SURGE 3: Give the target a LOCK token." },
+  "Chaingun": { range: "RANGED", damage: 1, energy: 4, heat: 2, dice: 6, hardpoints: 2, type: "Heavy Artillery, Ballistic", ability: "SURGE 3: Add +1 strike to this attack." },
+  "One-Way Ticket": { range: "RANGED", damage: 3, energy: 3, heat: "-", dice: 4, hardpoints: 2, type: "Heavy Artillery, Explosive", ability: "PASSIVE: After an active frame resolves a peripheral action, overheat this module. SURGE 4: Ignore this model's PASSIVE ability." },
+  "Howitzer": { range: "RANGED", damage: 3, energy: 4, heat: 3, dice: 4, hardpoints: 2, type: "Heavy Artillery, Ballistic", ability: "SURGE 3: Reduce the target's armor by -1 until the roll is resolved." },
+  "Railgun": { range: "RANGED", damage: 4, energy: 6, heat: 2, dice: 4, hardpoints: 3, type: "Heavy Artillery - Indirect, Ballistic", ability: "SURGE 3: Increase the POW of this attack by +1. Requires LOCK." },
+  "Mortar Pods": { range: "RANGED", damage: 2, energy: 3, heat: 2, dice: 3, hardpoints: 2, type: "Heavy Artillery - Indirect, Explosive", ability: "Deals 1/2 damage rounded down to all frames within M." },
+  "Missile Pods": { range: "RANGED", damage: 3, energy: 3, heat: 2, dice: 3, hardpoints: 1, type: "Heavy Artillery - Indirect, Ballistic", ability: "Requires LOCK." }
 };
 
 const RANGE_ICONS = {
-  "Melee": "🗡️",
-  "Long": "🚀"
+  "MELEE": "🗡️",
+  "RANGED": "🚀"
 };
 
 const UPGRADE_OPTIONS = [
+  "Snap-Boosters",
+  "Vertical Thrusters",
+  "Slam Boosters",
+  "Enhanced Stabilizers",
+  "Targeting Array",
+  "Sim-Snap Calculator",
   "Enhanced Scopes",
   "Drone Management Unit",
   "Auxiliary Generator",
+  "Uptuned Generator",
+  "Battery Extension",
+  "Heat Sinks",
+  "Smoke Launcher",
+  "EMP",
+  "Disposable ECMU",
   "Tungsten Rounds",
+  "Multimunition",
+  "Thumper Rounds",
+  "Volitile Rounds",
+  "Dampening Array",
   "Reactive Shielding",
-  "Snap-Boosters"
+  "BT597_ROCKNROLLA",
+  "BT273_SHINOBI",
+  "BT726_AUTOWINDER",
+  "BT854_JOHNHENRY",
+  "BT854_KNOXVILLE",
+  "BT401_TOROLLR",
+  "BT331_NIGHTINGALE"
+  
 ];
 
 const UPGRADE_DATA = {
-  "Enhanced Scopes": { bonus: "+1 Range Accuracy", energy: 2, hardpoints: 1, ability: "Improves accuracy at long range." },
-  "Drone Management Unit": { bonus: "Control up to 2 drones", energy: 3, hardpoints: 1, ability: "Allows drone deployment." },
-  "Auxiliary Generator": { bonus: "+2 Energy Capacity", energy: 3, hardpoints: 2, ability: "Adds energy to your mech." },
-  "Tungsten Rounds": { bonus: "+1 Damage vs Armor", energy: 3, hardpoints: 1, ability: "Bypass light shielding." },
-  "Reactive Shielding": { bonus: "Reduces incoming damage by 1", energy: 3, hardpoints: 1, ability: "Triggers on hit once per round." },
-  "Snap-Boosters": { bonus: "Perform an additional move action.", energy: 3, hardpoints: 1, ability: "Movement triggers an additional move or strafe." }
+  "Snap-Boosters": { bonus: "UPGRADE", energy: 3, hardpoints: 1, ability: "Performing a move or strafe allows you to overheat this module for an additional move or strafe." },
+  "Vertical Thrusters": { bonus: "UPGRADE - Immune to Fall Damage", energy: 3, hardpoints: 1, ability: "You may overheat this module when performing a Vault action instead of gaining heat tokens." },
+  "Slam Boosters": { bonus: "UPGRADE", energy: 2, hardpoints: 1, ability: "When this frame performs a move or strafe, you may overheat this module to deal 1 damage to any frame you come into contact with and force them to backpedal." },
+  "Enhanced Stabilizers": { bonus: "UPGRADE", energy: 2, hardpoints: 1, ability: "When this frame performs a ranged attack with a Heavy Artillery weapon, you may overheat this module to add +2 surges to the result." },
+  "Targeting Array": { bonus: "UPGRADE", energy: 2, hardpoints: 1, ability: "LOCKED frames are always considered to be within LOS of this frame when firing Indirect weapons. Remove the lock token and overheat this module after the attack resolves." },
+  "Sim-Snap Calculator": { bonus: "UPGRADE - Snap-Fire", energy: 3, hardpoints: 1, ability: "This frame may overheat this module and any weapon in order to make a Snap-Fire ranged attack reaction with that weapon." },
+  "Enhanced Scopes": { bonus: "UPGRADE - Sensitive Instrument", energy: 2, hardpoints: 1, ability: "Whenever this frame performs a ranged attack, and +1 strike and +1 surge to the result." },
+  "Drone Management Unit": { bonus: "UPGRADE- Unlocks Drones", energy: 3, hardpoints: 1, ability: "When this frame activates, you may overheat this module to give a friendly drone a free Core & Peripheral action." },
+  "Auxiliary Generator": { bonus: "UPGRADE - Heat Slot", energy: 3, hardpoints: 2, ability: "When activating this frame, you may use this module's heat slot as if it were an extra on this frame's blueprint." },
+  "Uptuned Generator": { bonus: "UPGRADE - Sensitive Instrument", energy: 4, hardpoints: 1, ability: "Surge abilities cost 1 less to trigger by this frame." },
+  "Battery Extension": { bonus: "UPGRADE", energy: -3, hardpoints: 1, ability: "This frame's power capacity is increased by +3." },
+  "Heat Sinks": { bonus: "UPGRADE - Failsafe", energy: 2, hardpoints: 1, ability: "If a module on this frame would overheat, you may opt to overheat this instead." },
+  "Smoke Launcher": { bonus: "UPGRADE - Snap-Fire", energy: 2, hardpoints: 1, ability: "Place a Low-Visibility marker L away from this frame, then overheat this module." },
+  "EMP": { bonus: "UPGRADE", energy: 3, hardpoints: 1, ability: "Action: Overheat this module; then, each other frame within L of this frame reduces their power capacity by 5. Overheat modules until power capacity is met." },
+  "Disposable ECMU": { bonus: "UPGRADE", energy: 2, hardpoints: 1, ability: "Whenever this frame becomes the target of a LOCK action, you may overheat this module to gain +2 armor until the end of the activation." },
+  "Tungsten Rounds": { bonus: "MUNITION", energy: 3, hardpoints: 1, ability: "Increase the POW of a ranged attack by +1. If you do, overheat this module." },
+  "Multimunition": { bonus: "MUNITION", energy: 2, hardpoints: 1, ability: "When this frame performs a ranged attack, you may overheat this module to change the damage type to Piercing, Explosive, or Force." },
+  "Thumper Rounds": { bonus: "MUNITION", energy: 3, hardpoints: 1, ability: "When this frame performs a ranged attack with a Force weapon, you may overheat this module. If the target takes damage, they must perfrom a backpedal action. If they cannot they will take an additional +2 damage." },
+  "Volatile Rounds": { bonus: "MUNITION", energy: 3, hardpoints: 1, ability: "When this frame performs a ranged attack with an Explosive weapon, you may overheat this module. If the target takes damage, deal 1/2 that damage rounded down to all frames within M." },
+  "Dampening Array": { bonus: "SHIELDING", energy: 3, hardpoints: 1, ability: "This frame has +1 armor when is targeted by a Energy or Force attack. Overheat this module when this frame takes damage." },
+  "Reactive Shielding": { bonus: "SHIELDING", energy: 3, hardpoints: 1, ability: "This frame has +1 armor when is targeted by a Ballistic or Explosive attack. Overheat this module when this frame takes damage." },
+  "BT597_ROCKNROLLA": { bonus: "BRAINTAPE", energy: 2, hardpoints: 1, ability: "When this frame performs a ranged attack, you may overheat this module. If you do, add an extra dice and heat result to the roll." },
+  "BT273_SHINOBI": { bonus: "BRAINTAPE", energy: 2, hardpoints: 1, ability: "When this frame performs an action, you may overheat this module. If you do, that action does not generate reactions." },
+  "BT726_AUTOWINDER": { bonus: "BRAINTAPE", energy: 2, hardpoints: 1, ability: "You may overheat this module to re-roll a die in a roll made by this frame." },
+  "BT854_JOHNHENRY": { bonus: "BRAINTAPE", energy: 2, hardpoints: 1, ability: "This frame can trigger a single Surge ability any number of times." },
+  "BT854_KNOXVILLE": { bonus: "BRAINTAPE", energy: 2, hardpoints: 1, ability: "This frame can trigger more than one unique Surge ability per roll." },
+  "BT401_TOROLLR": { bonus: "BRAINTAPE - Snap-Fire", energy: 2, hardpoints: 1, ability: "As a reaction, you may overheat this module. If you do, all surge abilities cost an additional +2 to trigger for the rest of the activation." },
+  "BT331_NIGHTINGALE": { bonus: "BRAINTAPE", energy: 2, hardpoints: 1, ability: "If this frwou dalt any amount of damage, prevent up to 2 of that damage, then overheat this module." }
 };
 
 // Embedded YouTube Video component
@@ -373,8 +438,8 @@ export default function RosterEditor() {
                               </Select>
                               {weapon && WEAPON_DATA[weapon] && (
                                 <div className="text-xs text-blue-200 border-l-2 border-blue-400 pl-2 ml-1">
-                                  <p><strong>{RANGE_ICONS[WEAPON_DATA[weapon].range]} — DICE {WEAPON_DATA[weapon].dice}, POW {WEAPON_DATA[weapon].damage}, Heat Threshold {WEAPON_DATA[weapon].heat}</strong></p>
-                                  <p title={WEAPON_DATA[weapon].ability} className="italic text-blue-400 truncate max-w-full cursor-help">
+                                  <p><strong>{RANGE_ICONS[WEAPON_DATA[weapon].range]} — DICE {WEAPON_DATA[weapon].dice}, POW {WEAPON_DATA[weapon].damage}, OVERHEAT {WEAPON_DATA[weapon].heat}</strong></p>
+                                  <p title={WEAPON_DATA[weapon].ability} className="italic text-blue-400 whitespace-pre-wrap cursor-help">
                                     {WEAPON_DATA[weapon].ability}
                                   </p>
                                 </div>
@@ -407,8 +472,8 @@ export default function RosterEditor() {
                               </Select>
                               {upgrade && UPGRADE_DATA[upgrade] && (
                                 <div className="text-xs text-blue-200 border-l-2 border-blue-400 pl-2 ml-1">
-                                  <p><strong>{UPGRADE_DATA[upgrade].bonus}, EN {UPGRADE_DATA[upgrade].energy}</strong></p>
-                                  <p title={UPGRADE_DATA[upgrade].ability} className="italic text-blue-400 truncate max-w-full cursor-help">
+                                  <p><strong>{UPGRADE_DATA[upgrade].bonus}</strong></p>
+                                  <p title={UPGRADE_DATA[upgrade].ability} className="italic text-blue-400 whitespace-pre-wrap cursor-help">
                                     {UPGRADE_DATA[upgrade].ability}
                                   </p>
                                 </div>
